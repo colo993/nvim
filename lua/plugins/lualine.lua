@@ -37,8 +37,6 @@ return {
                 },
                 lualine_x = {
                     { get_venv, color = { fg = '#80cbc4' } },
-                    'encoding',
-                    'fileformat',
                     'progress',
                     'searchcount'
                 },
