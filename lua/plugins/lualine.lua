@@ -3,11 +3,12 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
         local lualine = require('lualine')
-        local components = require('lualine.components') -- Our custom components
 
-        local function get_venv_display()
-            if package.loaded["lualine.components"] then
-                return require("lualine.components").get_venv()
+        local function get_venv()
+            local venv_path = os.getenv("VIRTUAL_ENV")
+            if venv_path then
+                local parts = vim.split(venv_path, "/")
+                return "uv: " .. parts[#parts]
             else
                 return ""
             end
@@ -35,7 +36,7 @@ return {
                     { 'filename', path = 1, color = { fg = '#80cbc4' } }
                 },
                 lualine_x = {
-                    { get_venv_display, color = { fg = '#80cbc4' } },
+                    { get_venv, color = { fg = '#80cbc4' } },
                     'encoding',
                     'fileformat',
                     'progress',
