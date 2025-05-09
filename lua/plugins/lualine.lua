@@ -16,7 +16,7 @@ return {
 
         lualine.setup({
             options = {
-                theme = 'material'
+                theme = 'codedark'
             },
             sections = {
                 lualine_a = { 'mode' },
@@ -28,15 +28,15 @@ return {
                         cond = function()
                             return vim.fn.exists('*FugitiveStatusline') and vim.fn.FugitiveStatusline() ~= ''
                         end,
-                        color = { fg = '#80cbc4' }, -- Optional: Set a color
+                        color = { fg = '#d7ba7d' },
                     },
                 'diff',
                 'diagnostics' },
                 lualine_c = {
-                    { 'filename', path = 1, color = { fg = '#80cbc4' } }
+                    { 'filename', path = 1, color = { fg = '#d4d4d4' } }
                 },
                 lualine_x = {
-                    { get_venv, color = { fg = '#80cbc4' } },
+                    { get_venv , color = { fg = '#c586c0' } },
                     'progress',
                     'searchcount'
                 },
