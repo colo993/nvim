@@ -71,7 +71,7 @@ return {
       vim.keymap.set("n", "<leader>dO", function()
         dap.step_out()
       end, opts)
-			
+
       -- Keymap to terminate debugging
 	  vim.keymap.set("n", "<leader>dq", function()
 	      require("dap").terminate()
