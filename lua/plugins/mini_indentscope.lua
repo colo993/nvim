@@ -1,7 +1,5 @@
--- lua/plugins/indent_blankline.lua
-
 return {
-  'chasnovski/mini.nvim',
+  'echasnovski/mini.nvim',
   config = function()
     require('mini.indentscope').setup({
     })
