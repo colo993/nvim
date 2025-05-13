@@ -40,7 +40,8 @@ return {
             })
             lspconfig.ruff.setup({
               on_attach = on_attach,
-          })
+              root_dir = lspconfig.util.root_pattern("pyproject.toml", ".git")(bufnr),
+            })
         end,
     },
 }

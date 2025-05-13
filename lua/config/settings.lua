@@ -1,11 +1,10 @@
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "python" },
   callback = function()
-    vim.cmd("setlocal expandtab")
+    vim.cmd("setlocal noexpandtab")
     vim.cmd("setlocal tabstop=4") -- Python indentation: 4 spaces
     vim.cmd("setlocal softtabstop=4")
     vim.cmd("setlocal shiftwidth=4")
-    vim.cmd("silent! %retab!") -- Convert existing tabs to spaces silently
     vim.cmd("silent! :%s/\\s\\+$//e") -- Optional: Remove trailing whitespace silently
   end,
 })
