@@ -35,7 +35,7 @@ return {
 				end)(),
 				init_options = {
 					settings = {
-            logLevel = "warn",
+						logLevel = "warn",
 					},
 				},
 			})
