@@ -3,7 +3,6 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
         local lualine = require('lualine')
-
         local function get_venv()
             local venv_path = os.getenv("VIRTUAL_ENV")
             if venv_path then
