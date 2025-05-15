@@ -18,8 +18,8 @@ return {
 				-- Rename: Renames the symbol across the project/scope
 				vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 				-- Code Actions: Shows available actions (like Organize Imports from Ruff)
-				vim.api.nvim_buf_set_set(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-				vim.api.nvim_buf_set_set(bufnr, "v", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts) -- Also in visual mode
+				vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+				vim.api.nvim_buf_set_keymap(bufnr, "v", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts) -- Also in visual mode
 				-- Diagnostics mappings (helpful for seeing errors/warnings)
 				vim.api.nvim_buf_set_keymap(bufnr, "n", "[j", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
 				vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
