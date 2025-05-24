@@ -65,6 +65,47 @@ return {
           indent_tables = true,
         }
       })
+      lspconfig.html.setup({
+        on_attach = on_attach,
+        cmd = { "html-languageserver", "--stdio" },
+        filetypes = {"html", "htm", "phtml", "xhtml", "djangohtml", "jinja" },
+      })
+      lspconfig.cssls.setup({
+        on_attach = on_attach,
+        cmd = { "css-languageserver", "--stdio" },
+        filetypes = {"css", "scss", "less", "djangohtml", "jinja" },
+      })
+      lspconfig.emmet_ls.setup({
+        on_attach = on_attach,
+        cmd = { "emmet-language-server", "--stdio" },
+        filetypes = {
+          "html",
+          "htm",
+          "css",
+          "scss",
+          "less",
+          "javascriptreact",
+          "typescriptreact",
+          "vue",
+          "svelte",
+          "astro",
+          "php",
+          "twig",
+          "erb",
+          "hbs",
+          "djangohtml",
+          "jinja",
+        },
+      })
+      lspconfig.jsonls.setup({
+        on_attach = on_attach,
+        filetypes = { "json", "jsonc" },
+        settings = {
+          json = {
+            schemas = require("lspconfig/util").schemas,
+          },
+        },
+      })
     end,
   },
 }
