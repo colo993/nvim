@@ -1,15 +1,18 @@
 return {
-	{
-		"rebelot/kanagawa.nvim",
-		lazy = false,
-		name = "kanagawa",
-		priority = 1000,
-		config = function()
-			local kanagawa = require("kanagawa")
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    name = "kanagawa",
+    priority = 1000,
+    config = function()
+      vim.keymap.set("n", "<leader>kd", ":colorscheme kanagawa-dragon<CR>", { desc = "Kanagawa Dragon theme" })
+      vim.keymap.set("n", "<leader>kl", ":colorscheme kanagawa-lotus<CR>", { desc = "Kanagawa Lotus theme" })  
 
-			kanagawa.setup({})
+      local kanagawa = require("kanagawa")
 
-			vim.cmd.colorscheme("kanagawa-dragon")
-		end,
-	},
+      kanagawa.setup({})
+
+      vim.cmd.colorscheme("kanagawa-dragon")
+    end,
+  },
 }
