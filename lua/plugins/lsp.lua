@@ -11,7 +11,7 @@ return {
 				settings = {
 					pyright = {
 						disableOrganizeImports = true,
-						typeCheckingMode = "strict",
+						typeCheckingMode = "basic",
 					},
 				},
 			})

@@ -34,8 +34,6 @@ M.on_attach = function(client, bufnr)
 			.. "  vim.lsp.buf.format({ bufnr = current_bufnr, async = true, filter = function(cl) return cl.name == 'null-ls' and cl.supports_method('textDocument/formatting') end }) "
 			.. "elseif buftype == 'toml' or buftype == 'yaml' or buftype == 'yml' then "
 			.. "  vim.lsp.buf.format({ bufnr = current_bufnr, async = true, filter = function(cl) return cl.name == 'taplo' and cl.supports_method('textDocument/formatting') end }) "
-			.. "elseif buftype == 'toml' or buftype == 'yaml' or buftype == 'yml' then "
-			.. "  vim.lsp.buf.format({ bufnr = current_bufnr, async = true, filter = function(cl) return cl.name == 'taplo' and cl.supports_method('textDocument/formatting') end }) "
 			.. "else "
 			.. "  vim.lsp.buf.format({ bufnr = current_bufnr, async = true, filter = function(cl) return cl.name == 'null-ls' and cl.supports_method('textDocument/formatting') end }) "
 			.. "end<CR>",
