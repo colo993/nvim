@@ -48,15 +48,15 @@ M.on_attach = function(client, bufnr)
 			end,
 		})
 	end
-	if client.supports_method("textDocument/formatting") then
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }),
-			buffer = bufnr,
-			callback = function()
-				vim.lsp.buf.format({ bufnr = bufnr, async = false })
-			end,
-		})
-	end
+	--if client.supports_method("textDocument/formatting") then
+	--vim.api.nvim_create_autocmd("BufWritePre", {
+	--group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }),
+	--buffer = bufnr,
+	--callback = function()
+	--vim.lsp.buf.format({ bufnr = bufnr, async = false })
+	--end,
+	--})
+	--end
 end
 
 return M
