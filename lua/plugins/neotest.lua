@@ -17,7 +17,7 @@ return {
 				adapters = {
 					neotest_python({
 						dap = { justMyCode = false },
-						args = { "--log-level", "DEBUG", "--cov", "--cov-pytest", "term" },
+						args = { "--log-level", "DEBUG", "--cov", "term" },
 						runner = "pytest",
 						python = ".venv/bin/python",
 					}),
