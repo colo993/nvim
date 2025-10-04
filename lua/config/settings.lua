@@ -1,41 +1,41 @@
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "python" },
-	callback = function()
-		vim.cmd("setlocal noexpandtab")
-		vim.cmd("setlocal tabstop=4") -- Python indentation: 4 spaces
-		vim.cmd("setlocal softtabstop=4")
-		vim.cmd("setlocal shiftwidth=4")
-		vim.cmd("silent! :%s/\\s\\+$//e") -- Optional: Remove trailing whitespace silently
-	end,
+  pattern = { "python" },
+  callback = function()
+    vim.cmd("setlocal expandtab")
+    vim.cmd("setlocal tabstop=4") -- Python indentation: 4 spaces
+    vim.cmd("setlocal softtabstop=4")
+    vim.cmd("setlocal shiftwidth=4")
+    vim.cmd("silent! :%s/\\s\\+$//e") -- Optional: Remove trailing whitespace silently
+  end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = {
-		"lua",
-		"html",
-		"htm",
-		"xhtml",
-		"htmldjango",
-		"css",
-		"scss",
-		"less",
-		"javascript",
-		"json",
-		"typescript",
-		"javascriptreact",
-		"typescriptreact",
-		"yml",
-		"yaml",
-		"toml",
-	},
-	callback = function()
-		vim.cmd("setlocal expandtab")
-		vim.cmd("setlocal tabstop=2") -- Lua indentation: 2 spaces
-		vim.cmd("setlocal softtabstop=2")
-		vim.cmd("setlocal shiftwidth=2")
-		vim.cmd("silent! %retab!") -- Convert existing tabs to spaces silently
-		vim.cmd("silent! :%s/\\s\\+$//e") -- Optional: Remove trailing whitespace silently
-	end,
+  pattern = {
+    "lua",
+    "html",
+    "htm",
+    "xhtml",
+    "htmldjango",
+    "css",
+    "scss",
+    "less",
+    "javascript",
+    "json",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
+    "yml",
+    "yaml",
+    "toml",
+  },
+  callback = function()
+    vim.cmd("setlocal expandtab")
+    vim.cmd("setlocal tabstop=2") -- Lua indentation: 2 spaces
+    vim.cmd("setlocal softtabstop=2")
+    vim.cmd("setlocal shiftwidth=2")
+    vim.cmd("silent! %retab!") -- Convert existing tabs to spaces silently
+    vim.cmd("silent! :%s/\\s\\+$//e") -- Optional: Remove trailing whitespace silently
+  end,
 })
 
 vim.g.mapleader = " "

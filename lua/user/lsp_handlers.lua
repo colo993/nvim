@@ -21,51 +21,15 @@ M.on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
-    "n",
-    "<leader>fm",
-    "<cmd>lua "
-      .. "local current_bufnr = vim.api.nvim_get_current_buf(); "
-      .. "local buftype = vim.api.nvim_buf_get_option(current_bufnr, 'filetype'); "
-      .. "if buftype == 'python' then "
-      .. "  vim.lsp.buf.format({ bufnr = current_bufnr, async = true, filter = function(cl) return cl.name == 'ruff' and cl.supports_method('textDocument/formatting') end }) "
-      .. "elseif buftype == 'html' or buftype == 'htm' or buftype == 'htmldjango' then "
-      .. "  vim.lsp.buf.format({ bufnr = current_bufnr, async = true, filter = function(cl) return cl.name == 'null-ls' and cl.supports_method('textDocument/formatting') end }) "
-      .. "elseif buftype == 'toml' or buftype == 'yaml' or buftype == 'yml' then "
-      .. "  vim.lsp.buf.format({ bufnr = current_bufnr, async = true, filter = function(cl) return cl.name == 'taplo' and cl.supports_method('textDocument/formatting') end }) "
-      .. "else "
-      .. "  vim.lsp.buf.format({ bufnr = current_bufnr, async = true, filter = function(cl) return cl.name == 'null-ls' and cl.supports_method('textDocument/formatting') end }) "
-      .. "end<CR>",
-    opts
-  )
+
+  -- Adjust client capabilities
   if client.offset_encoding then
     client.offset_encoding = "utf-8"
   end
 
+  -- Disable ruff's hover in favor of Pyright
   if client.name == "ruff" then
     client.server_capabilities.hoverProvider = false
-  end
-
-  if client.supports_method("textDocument/formatting") then
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }),
-      buffer = bufnr,
-      callback = function()
-        -- Only apply to Python files, and filter to use null-ls client
-        local filetype = vim.bo[bufnr].filetype
-        if filetype == "python" then
-          vim.lsp.buf.format({
-            bufnr = bufnr,
-            async = false, -- Set to false to ensure formatting completes before save
-            filter = function(cl)
-              -- Explicitly choose the 'null-ls' client for formatting Python files
-              return cl.name == "null-ls" and cl.supports_method("textDocument/formatting")
-            end,
-          })
-        end
-      end,
-    })
   end
 end
 

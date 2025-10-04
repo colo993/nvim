@@ -17,6 +17,22 @@ return {
     end,
   },
 
+  -- Mason tool installer
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "mason.nvim" },
+    config = function()
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "prettier",
+          "ruff",
+          "taplo",
+          "stylua",
+        },
+      })
+    end,
+  },
+
   -- Mason LSP bridge
   {
     "williamboman/mason-lspconfig.nvim",
