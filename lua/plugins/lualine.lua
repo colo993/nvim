@@ -15,7 +15,7 @@ return {
 
     lualine.setup({
       options = {
-        theme = "codedark",
+        theme = "kanagawa",
       },
       sections = {
         lualine_a = { "mode" },
