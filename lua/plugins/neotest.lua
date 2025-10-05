@@ -18,7 +18,7 @@ return {
               justMyCode = false,
               console = "integratedTerminal",
             },
-            args = { "--log-level", "DEBUG", "--quiet" },
+            args = { "--log-level", "DEBUG", "--verbose", "--no-cov" },
             runner = "pytest",
             python = function()
               -- Auto-detect virtual environment
@@ -29,12 +29,22 @@ return {
               return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
             end,
             pytest_discover_instances = true,
+            is_test_file = function(file_path)
+              -- Detect Django test files
+              return vim.endswith(file_path, ".py")
+                and (
+                  vim.startswith(vim.fn.fnamemodify(file_path, ":t"), "test_")
+                  or vim.endswith(vim.fn.fnamemodify(file_path, ":t:r"), "_test")
+                  or file_path:match("/tests/")
+                  or file_path:match("/test%.py$")
+                )
+            end,
           }),
         },
         -- Floating window for test output
         output = {
           enabled = true,
-          open_on_run = "short",
+          open_on_run = true,
         },
         output_panel = {
           enabled = true,
@@ -42,17 +52,36 @@ return {
         },
         -- Icons in sign column
         icons = {
-          running = "",
-          passed = "",
-          failed = "",
-          skipped = "",
-          unknown = "",
+          passed = "✓",
+          running = "●",
+          failed = "✗",
+          skipped = "⊘",
+          unknown = "?",
+          running_animated = vim.tbl_map(function(s)
+            return s .. " "
+          end, { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }),
         },
         -- Status display
         status = {
           enabled = true,
-          virtual_text = true,
+          virtual_text = false,
           signs = true,
+        },
+        -- Highlights for the icons
+        highlights = {
+          passed = "NeotestPassed",
+          running = "NeotestRunning",
+          failed = "NeotestFailed",
+          skipped = "NeotestSkipped",
+        },
+        diagnostic = {
+          enabled = true,
+          severity = vim.diagnostic.severity.ERROR,
+        },
+        floating = {
+          border = "rounded",
+          max_height = 0.8,
+          max_width = 0.9,
         },
         -- Quickfix integration
         quickfix = {
@@ -86,7 +115,13 @@ return {
             watch = "w",
           },
         },
+        log_level = vim.log.levels.WARN,
       })
+      -- Define custom highlights for better visibility
+      vim.api.nvim_set_hl(0, "NeotestPassed", { fg = "#00ff00", bold = true })
+      vim.api.nvim_set_hl(0, "NeotestFailed", { fg = "#ff0000", bold = true })
+      vim.api.nvim_set_hl(0, "NeotestRunning", { fg = "#ffff00", bold = true })
+      vim.api.nvim_set_hl(0, "NeotestSkipped", { fg = "#00ffff", bold = true })
     end,
     keys = {
       -- Run tests

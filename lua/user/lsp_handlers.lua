@@ -1,26 +1,59 @@
 local M = {}
+
 M.on_attach = function(client, bufnr)
-  local opts = { noremap = true, silent = true }
-  -- Go To Definition: Jumps to the primary definition
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  -- Go To Declaration: Jumps to the declaration (might be different from definition in some languages/cases)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  -- Go To Implementation: Jumps to implementation(s) of an interface/method
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  -- Go To References: Lists all references to the symbol
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  -- Hover: Shows type information and docstrings (Pyright provides this)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>h", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-  -- Rename: Renames the symbol across the project/scope
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-  -- Code Actions: Shows available actions (like Organize Imports from Ruff)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "v", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts) -- Also in visual mode
-  -- Diagnostics mappings (helpful for seeing errors/warnings)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "[j", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+  local function map(mode, lhs, rhs, opts)
+    opts = opts or {}
+    opts.buffer = bufnr
+    vim.keymap.set(mode, lhs, rhs, opts)
+  end
+
+  -- LSP mappings
+  map("n", "<leader>ld", vim.lsp.buf.definition, { desc = "Go To Definition" })
+  map("n", "<leader>lD", vim.lsp.buf.declaration, { desc = "Go To Declaration" })
+  map("n", "<leader>li", vim.lsp.buf.implementation, { desc = "Go To Implementation" })
+  map("n", "<leader>lr", vim.lsp.buf.references, { desc = "Go To References" })
+  map("n", "<leader>lh", vim.lsp.buf.hover, { desc = "Hover" })
+  map("n", "<leader>ln", vim.lsp.buf.rename, { desc = "Rename Symbol" })
+
+  -- Code Actions
+  map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
+  map("v", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
+
+  -- Diagnostics mappings
+  map("n", "[d", vim.diagnostic.goto_prev, { desc = "Prev Diagnostic" })
+  map("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
+  map("n", "<leader>le", vim.diagnostic.open_float, { desc = "Show Diagnostic" })
+  map("n", "<leader>lq", vim.diagnostic.setloclist, { desc = "Set Location List" })
+
+  -- Toggle spell checking
+  map("n", "<leader>sp", function()
+    vim.wo.spell = not vim.wo.spell
+    vim.notify("Spell check " .. (vim.wo.spell and "ON" or "OFF"))
+  end, { desc = "Toggle Spell Check" })
+
+  map("i", "<leader>sp", function()
+    vim.wo.spell = not vim.wo.spell
+    vim.notify("Spell check " .. (vim.wo.spell and "ON" or "OFF"))
+  end, { desc = "Toggle Spell Check" })
+
+  -- Explicitly register with which-key
+  local ok, wk = pcall(require, "which-key")
+  if ok then
+    wk.add({
+      { "<leader>l", group = "LSP", buffer = bufnr, icon = "" },
+      { "<leader>ld", desc = "Go To Definition", buffer = bufnr },
+      { "<leader>lD", desc = "Go To Declaration", buffer = bufnr },
+      { "<leader>li", desc = "Go To Implementation", buffer = bufnr },
+      { "<leader>lr", desc = "Go To References", buffer = bufnr },
+      { "<leader>lh", desc = "Hover", buffer = bufnr },
+      { "<leader>ln", desc = "Rename Symbol", buffer = bufnr },
+      { "<leader>la", desc = "Code Action", buffer = bufnr, mode = { "n", "v" } },
+      { "<leader>le", desc = "Show Diagnostic", buffer = bufnr },
+      { "<leader>lq", desc = "Set Location List", buffer = bufnr },
+      { "<leader>s", group = "Spell", buffer = bufnr },
+      { "<leader>sp", desc = "Toggle Spell Check", buffer = bufnr, mode = { "n", "i" } },
+    })
+  end
 
   -- Adjust client capabilities
   if client.offset_encoding then

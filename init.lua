@@ -11,6 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 vim.opt.clipboard = "unnamedplus"
+vim.opt.spelllang = "en,pl"
 
 require("config.settings")
 require("config.diagnostics")

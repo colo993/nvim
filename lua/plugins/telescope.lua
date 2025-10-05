@@ -167,7 +167,7 @@ return {
       -- Recent/Buffers
       vim.keymap.set("n", "<C-o>", builtin.oldfiles, { desc = "Recent files" })
       vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "Recent files" })
-      vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
+      vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "Find buffers" })
 
       -- Git pickers
       vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "Git commits" })

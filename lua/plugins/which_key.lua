@@ -2,10 +2,16 @@ return {
   "folke/which-key.nvim",
   event = "VeryLazy",
   opts = {
+    preset = "modern", -- or "classic", "helix"
+    delay = 200, -- delay before showing the popup (ms)
+
     plugins = {
       marks = true, -- shows a list of your marks on ' and `
       registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
-      -- Presets for built-in commands
+      spelling = {
+        enabled = true, -- show suggestions for misspelled words
+        suggestions = 20,
+      },
       presets = {
         operators = true, -- adds help for operators like d, y, ...
         motions = true, -- adds help for motions
@@ -16,28 +22,80 @@ return {
         g = true, -- bindings for code actions, goto ...
       },
     },
-    -- add icons to the popup
-    -- requires a Nerd Font: https://www.nerdfonts.com/
+
+    -- New v3 syntax for icons
     icons = {
-      breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-      separator = "➜", -- symbol used between a key and it's label
-      group = "+", -- symbol prepended to a group's name
+      breadcrumb = "»",
+      separator = "➜",
+      group = "+",
+      ellipsis = "…",
+      mappings = true, -- show icon mappings
+      rules = false, -- use default icon rules
+      colors = true, -- use colors for icons
+      keys = {
+        Up = " ",
+        Down = " ",
+        Left = " ",
+        Right = " ",
+        C = "󰘴 ",
+        M = "󰘵 ",
+        D = "󰘳 ",
+        S = "󰘶 ",
+        CR = "󰌑 ",
+        Esc = "󱊷 ",
+        ScrollWheelDown = "󱕐 ",
+        ScrollWheelUp = "󱕑 ",
+        NL = "󰌑 ",
+        BS = "󰁮",
+        Space = "󱁐 ",
+        Tab = "󰌒 ",
+        F1 = "󱊫",
+        F2 = "󱊬",
+        F3 = "󱊭",
+        F4 = "󱊮",
+        F5 = "󱊯",
+        F6 = "󱊰",
+        F7 = "󱊱",
+        F8 = "󱊲",
+        F9 = "󱊳",
+        F10 = "󱊴",
+        F11 = "󱊵",
+        F12 = "󱊶",
+      },
     },
-    window = {
+
+    -- New v3 syntax for window
+    win = {
       border = "rounded", -- none, single, double, shadow, rounded
-      position = "bottom", -- bottom, top
-      margin = { 1, 0, 1, 0 }, -- top, right, bottom, left
-      padding = { 1, 2, 1, 2 }, -- top, right, bottom, left
+      padding = { 1, 2 }, -- top, right, bottom, left
+      wo = {
+        winblend = 0, -- transparency
+      },
     },
+
     layout = {
-      height = { min = 4, max = 25 }, -- min and max height of the columns
-      width = { min = 20, max = 50 }, -- min and max width of the columns
-      spacing = 3, -- spacing between columns
-      align = "left", -- align columns left, center or right
+      height = { min = 4, max = 25 },
+      width = { min = 20, max = 50 },
+      spacing = 3,
+      align = "left",
     },
-    ignore_missing = true, -- enable this to not show mappings from plugins that aren't loaded
-    hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
+
+    -- New v3 syntax for filtering
+    filter = function(mapping)
+      -- Return true to show the mapping, false to hide it
+      return true
+    end,
+
+    -- Replaced ignore_missing and hidden with show options
+    show_help = true, -- show help message on the command line
+    show_keys = true, -- show the currently pressed key and its label
+
+    -- Trigger configuration
+    triggers = {
+      { "<auto>", mode = "nxsot" },
+    },
   },
+
   keys = {
     {
       "<leader>?",
