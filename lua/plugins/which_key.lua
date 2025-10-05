@@ -4,7 +4,9 @@ return {
   opts = {
     preset = "modern", -- or "classic", "helix"
     delay = 200, -- delay before showing the popup (ms)
-
+    defer = function(ctx)
+      return ctx.mode == "V" or ctx.mode == "<C-V>"
+    end,
     plugins = {
       marks = true, -- shows a list of your marks on ' and `
       registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
@@ -92,9 +94,29 @@ return {
 
     -- Trigger configuration
     triggers = {
-      { "<auto>", mode = "nxsot" },
+      { "<leader>", mode = { "n", "v" } },
     },
   },
+
+  config = function(_, opts)
+    local wk = require("which-key")
+    wk.setup(opts)
+
+    -- Register all groups
+    wk.add({
+      { "<leader>b", group = "Buffer" },
+      { "<leader>d", group = "Debug" },
+      { "<leader>f", group = "Find" },
+      { "<leader>g", group = "Git" },
+      { "<leader>h", group = "Git Hunk" },
+      { "<leader>k", group = "Kanagawa Theme" },
+      { "<leader>l", group = "LSP" },
+      { "<leader>p", group = "UV/Python" },
+      { "<leader>s", group = "Spell/Search" },
+      { "<leader>t", group = "Test/Toggle/TODO" },
+      { "<leader>u", group = "UI" },
+    })
+  end,
 
   keys = {
     {

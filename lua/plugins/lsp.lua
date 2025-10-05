@@ -61,9 +61,20 @@ return {
     config = function()
       local util = require("lspconfig.util")
 
-      --Lua Language Server
-      vim.lsp.enable("lua_ls", {
-        on_attach = lsp_handlers.on_attach,
+      -- Lua Language Server
+      vim.lsp.config("lua_ls", {
+        cmd = { "lua-language-server" },
+        filetypes = { "lua" },
+        root_markers = {
+          ".luarc.json",
+          ".luarc.jsonc",
+          ".luacheckrc",
+          ".stylua.toml",
+          "stylua.toml",
+          "selene.toml",
+          "selene.yml",
+          ".git",
+        },
         settings = {
           Lua = {
             diagnostics = {
@@ -78,12 +89,15 @@ return {
             },
           },
         },
+        handlers = {
+          ["textDocument/publishDiagnostics"] = vim.lsp.handlers["textDocument/publishDiagnostics"],
+        },
       })
 
-      -- Python: Pyright
-      vim.lsp.enable("pyright", {
-        on_attach = lsp_handlers.on_attach,
-        offsetEncoding = "utf-8",
+      vim.lsp.config("pyright", {
+        cmd = { "pyright-langserver", "--stdio" },
+        filetypes = { "python" },
+        root_markers = { "pyproject.toml", ".git" },
         settings = {
           pyright = {
             disableOrganizeImports = true,
@@ -94,29 +108,23 @@ return {
             },
           },
         },
-        root_dir = function(fname)
-          return util.root_pattern("pyproject.toml", ".git")(fname)
-        end,
       })
 
-      -- Python: Ruff
-      vim.lsp.enable("ruff", {
-        on_attach = lsp_handlers.on_attach,
-        offsetEncoding = "utf-8",
+      vim.lsp.config("ruff", {
+        cmd = { "ruff", "server" },
+        filetypes = { "python" },
+        root_markers = { "pyproject.toml", ".git" },
         init_options = {
           settings = {
             logLevel = "warn",
           },
         },
-        root_dir = function(fname)
-          return util.root_pattern("pyproject.toml", ".git")(fname)
-        end,
       })
 
-      -- TOML: Taplo
-      vim.lsp.enable("taplo", {
-        on_attach = lsp_handlers.on_attach,
+      vim.lsp.config("taplo", {
+        cmd = { "taplo", "lsp", "stdio" },
         filetypes = { "toml" },
+        root_markers = { ".git" },
         settings = {
           evenBetterToml = {
             schema = {
@@ -126,10 +134,10 @@ return {
         },
       })
 
-      -- JSON
-      vim.lsp.enable("jsonls", {
-        on_attach = lsp_handlers.on_attach,
+      vim.lsp.config("jsonls", {
+        cmd = { "vscode-json-language-server", "--stdio" },
         filetypes = { "json", "jsonc" },
+        root_markers = { ".git" },
         settings = {
           json = {
             schemas = util.default_schemas,
@@ -138,10 +146,10 @@ return {
         },
       })
 
-      -- HTML
-      vim.lsp.enable("html", {
-        on_attach = lsp_handlers.on_attach,
+      vim.lsp.config("html", {
+        cmd = { "vscode-html-language-server", "--stdio" },
         filetypes = { "html", "htm", "phtml", "xhtml", "htmldjango", "jinja" },
+        root_markers = { ".git" },
         init_options = {
           provideFormatter = true,
           embeddedLanguages = {
@@ -151,15 +159,14 @@ return {
         },
       })
 
-      -- CSS
-      vim.lsp.enable("cssls", {
-        on_attach = lsp_handlers.on_attach,
+      vim.lsp.config("cssls", {
+        cmd = { "vscode-css-language-server", "--stdio" },
         filetypes = { "css", "scss", "less", "htmldjango", "jinja" },
+        root_markers = { ".git" },
       })
 
-      -- Emmet
-      vim.lsp.enable("emmet_ls", {
-        on_attach = lsp_handlers.on_attach,
+      vim.lsp.config("emmet_ls", {
+        cmd = { "emmet-ls", "--stdio" },
         filetypes = {
           "html",
           "htm",
@@ -178,7 +185,28 @@ return {
           "htmldjango",
           "jinja",
         },
+        root_markers = { ".git" },
       })
+
+      -- Set up autocommand to call on_attach when LSP attaches
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client then
+            lsp_handlers.on_attach(client, args.buf)
+          end
+        end,
+      })
+
+      -- Enable LSP servers
+      vim.lsp.enable("lua_ls")
+      vim.lsp.enable("pyright")
+      vim.lsp.enable("ruff")
+      vim.lsp.enable("taplo")
+      vim.lsp.enable("jsonls")
+      vim.lsp.enable("html")
+      vim.lsp.enable("cssls")
+      vim.lsp.enable("emmet_ls")
     end,
   },
 }
