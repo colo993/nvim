@@ -49,7 +49,7 @@ return {
           -- Using this option may improve performance
           additional_vim_regex_highlighting = false,
         },
-        indent = { enable = true },
+        indent = { enable = false },
 
         -- == Feature Configurations ==
         autotag = {
