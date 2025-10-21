@@ -75,6 +75,17 @@ return {
           "selene.yml",
           ".git",
         },
+      capabilities = vim.tbl_deep_extend(
+          "force",
+          vim.lsp.protocol.make_client_capabilities(),
+          {
+            textDocument = {
+              synchronization = {
+                didSave = false,  -- Add this line
+              },
+            },
+          }
+        ),
         settings = {
           Lua = {
             diagnostics = {
@@ -108,6 +119,9 @@ return {
             },
           },
         },
+        on_attach = function(client)
+          client.server_capabilities.documentFormattingProvider = false
+        end,
       })
 
       vim.lsp.config("ruff", {
