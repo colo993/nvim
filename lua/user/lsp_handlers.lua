@@ -41,7 +41,7 @@ M.on_attach = function(client, bufnr)
 
   -- Client setup
   if client.offset_encoding then
-    client.offset_encoding = "utf-8"
+    client.offset_encoding = "utf-16"
   end
 
   if client.name == "ruff" then
