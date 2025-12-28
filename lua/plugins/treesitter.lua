@@ -1,24 +1,12 @@
 return {
+  -- Main treesitter plugin
   {
     "nvim-treesitter/nvim-treesitter",
-    version = false, -- Pin to main branch for stability
     build = ":TSUpdate",
-    dependencies = {
-      -- Essential for text objects
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      -- Shows the context of the code you're in (e.g., function name) at the top
-      "nvim-treesitter/nvim-treesitter-context",
-      -- Automatically adds/renames closing HTML tags
-      "windwp/nvim-ts-autotag",
-      {
-        -- For Django templates (htmldjango parser)
-        "g-hyuga/nvim-treesitter-django",
-        url = "git@github.com:interdependence/tree-sitter-htmldjango.git",
-      },
-    },
+    lazy = false,
+    priority = 1000,
     config = function()
-      require("nvim-treesitter.configs").setup({
-        -- A list of parser names, or "all"
+      require("nvim-treesitter.config").setup({
         ensure_installed = {
           "bash",
           "css",
@@ -35,71 +23,53 @@ return {
           "typescript",
           "yaml",
           "c",
-          "htmldjango", -- Parser for Django templates
+          "htmldjango",
         },
-
-        -- Install parsers synchronously (only applied to `ensure_installed`)
         sync_install = false,
-
-        -- Automatically install missing parsers when entering buffer
         auto_install = true,
-
         highlight = {
           enable = true,
-          -- Using this option may improve performance
           additional_vim_regex_highlighting = false,
         },
         indent = { enable = false },
-
-        -- == Feature Configurations ==
-        autotag = {
-          enable = true,
-        },
-
         incremental_selection = {
           enable = true,
           keymaps = {
-            init_selection = "<cr>", -- Start selection
-            node_incremental = "<cr>", -- Increment to the parent node
-            node_decremental = "<bs>", -- Decrement to the previous node
-            scope_incremental = "<tab>", -- Use for selecting scope
+            init_selection = "<cr>",
+            node_incremental = "<cr>",
+            node_decremental = "<bs>",
+            scope_incremental = "<tab>",
           },
         },
-
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true, -- Vimspection-style next/previous argument/parameter bindings
-            keymaps = {
-              -- You can use the default mappings
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["ac"] = "@class.outer",
-              ["ic"] = "@class.inner",
-              ["al"] = "@loop.outer",
-              ["il"] = "@loop.inner",
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true, -- whether to set jumps in the jumplist
-            goto_next_start = {
-              ["]f"] = "@function.outer",
-              ["]c"] = "@class.outer",
-            },
-            goto_previous_start = {
-              ["[f"] = "@function.outer",
-              ["[c"] = "@class.outer",
-            },
-          },
+        autotag = {
+          enable = true,
         },
-      })
-
-      -- Configuration for nvim-treesitter-context
-      require("treesitter-context").setup({
-        enable = true,
-        max_lines = 1, -- Only show one line of context
       })
     end,
+  },
+
+  -- Context plugin
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    event = "VeryLazy",
+    opts = {
+      enable = true,
+      max_lines = 1,
+    },
+  },
+
+  -- Autotag plugin
+  {
+    "windwp/nvim-ts-autotag",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    event = "VeryLazy",
+  },
+
+  -- Django templates
+  {
+    "g-hyuga/nvim-treesitter-django",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    url = "https://github.com/interdependence/tree-sitter-htmldjango.git",
   },
 }
