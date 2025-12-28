@@ -52,3 +52,4 @@ vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
 vim.keymap.set("n", "<leader>n", ":nohlsearch<CR>")
 vim.wo.number = true
 vim.o.relativenumber = true
+vim.opt.clipboard = "unnamedplus"
