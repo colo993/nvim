@@ -8,7 +8,6 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.5",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-fzf-native.nvim",
@@ -23,6 +22,7 @@ return {
           prompt_prefix = " ",
           selection_caret = " ",
           path_display = { "truncate" },
+          preview = { treesitter = false },
           file_ignore_patterns = {
             "node_modules",
             ".git/",
