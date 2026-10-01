@@ -11,7 +11,14 @@ return {
 
       local kanagawa = require("kanagawa")
 
-      kanagawa.setup({})
+      kanagawa.setup({
+        overrides = function(colors)
+          return {
+            Normal = { fg = "#D8DEE9" },
+            ["@variable"] = { fg = "#D8DEE9" },
+          }
+        end,
+      })
 
       vim.cmd.colorscheme("kanagawa-wave")
     end,
