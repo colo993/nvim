@@ -20,7 +20,33 @@ return {
         end,
       })
 
-      vim.cmd.colorscheme("kanagawa-wave")
+      --vim.cmd.colorscheme("kanagawa-wave")
+    end,
+  },
+  {
+    "ayu-theme/ayu-vim",
+    lazy = false,
+    name = "ayu",
+    priority = 1000,
+    config = function()
+      vim.opt.termguicolors = true
+
+      local function set_ayu(variant)
+        vim.g.ayucolor = variant
+        vim.cmd.colorscheme("ayu")
+      end
+
+      vim.keymap.set("n", "<leader>am", function()
+        set_ayu("mirage")
+      end, { desc = "Ayu Mirage" })
+      vim.keymap.set("n", "<leader>ad", function()
+        set_ayu("dark")
+      end, { desc = "Ayu Dark" })
+      vim.keymap.set("n", "<leader>al", function()
+        set_ayu("light")
+      end, { desc = "Ayu Light" })
+
+      set_ayu("mirage")
     end,
   },
 }
