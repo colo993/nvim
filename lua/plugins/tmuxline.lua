@@ -12,6 +12,6 @@ return {
       y = "%R",
       z = "#h",
     }
-    vim.g.tmuxline_theme = "kanagawa"
+    vim.g.tmuxline_theme = "ayu"
   end,
 }

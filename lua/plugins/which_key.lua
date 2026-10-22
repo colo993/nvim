@@ -104,6 +104,7 @@ return {
 
     -- Register all groups
     wk.add({
+      { "<leader>a", group = "Ayu Theme" },
       { "<leader>b", group = "Buffer" },
       { "<leader>d", group = "Debug" },
       { "<leader>f", group = "Find" },
